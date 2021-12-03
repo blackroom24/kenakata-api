@@ -3,7 +3,6 @@ from django.core.files import File
 from io import BytesIO
 from PIL import Image
 
-from kenakata.settings import BASE_URL
 
 # Create your models here.
 

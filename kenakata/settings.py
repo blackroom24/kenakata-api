@@ -10,18 +10,20 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 from pathlib import Path
-import os
+from . import secrets
 
 # Initialise environment variables
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_URL = secrets.BASE_URL
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "f_)*$6xz#a7k(6ir&u@+tq8h@_t_9%3nr%9g5z4vdp#*a4)a*o"
+SECRET_KEY = secrets.SECRET_KEY
+STRIPE_SECRET_KEY = secrets.STRIPE_SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -84,11 +86,11 @@ WSGI_APPLICATION = "kenakata.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "kenakata",
-        "USER": "postgres",
-        "PASSWORD": os.environ.get("DATABASE_PASSWORD"),
-        "HOST": "localhost",
-        "PORT": "5432",
+        "NAME": secrets.DATABASE_NAME,
+        "USER": secrets.DATABASE_USER,
+        "PASSWORD": secrets.DATABASE_PASSWORD,
+        "HOST": secrets.DATABASE_HOST,
+        "PORT": secrets.DATABASE_PORT,
     }
 }
 
@@ -137,6 +139,3 @@ MEDIA_ROOT = BASE_DIR / MEDIA_URL
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-import django_heroku
-
-django_heroku.settings(locals())

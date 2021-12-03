@@ -63,7 +63,7 @@ class Product(models.Model):
 
     def make_thumbnail(self, image, size=(300, 200)):
         img = Image.open(image)
-        img.convert("RGBA")
+        img.convert("RGB")
         img.thumbnail(size)
         thumb_IO = BytesIO()
         img.save(thumb_IO, "JPEG", quality=85)

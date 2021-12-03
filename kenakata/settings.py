@@ -9,22 +9,21 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-import environ
 from pathlib import Path
+import os
 
 # Initialise environment variables
-env = environ.Env()
-environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-BASE_URL = env("BASE_URL")
+BASE_URL = "http:localhost:8000"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = "f_)*$6xz#a7k(6ir&u@+tq8h@_t_9%3nr%9g5z4vdp#*a4)a*o"
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -46,8 +45,9 @@ INSTALLED_APPS = [
     "corsheaders",
     "djoser",
     "products",
+    "orders",
 ]
-CORS_ALLOWED_ORIGINS = ["https://localhost:8080"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:8080"]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -86,11 +86,11 @@ WSGI_APPLICATION = "kenakata.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": env("DATABASE_NAME"),
-        "USER": env("DATABASE_USER"),
-        "PASSWORD": env("DATABASE_PASSWORD"),
-        "HOST": env("DATABASE_HOST"),
-        "PORT": env("DATABASE_PORT"),
+        "NAME": "kenakata",
+        "USER": "postgres",
+        "PASSWORD": os.environ.get("DATABASE_PASSWORD"),
+        "HOST": "localhost",
+        "PORT": "5432",
     }
 }
 
@@ -132,10 +132,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = "/static/"
-MEDIA_URL = env("MEDIA_URL")
+MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / MEDIA_URL
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+import django_heroku
+
+django_heroku.settings(locals())

@@ -90,7 +90,6 @@ CLOUDINARY_STORAGE = {
     "API_SECRET": config("API_SECRET", default=""),
 }
 
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases

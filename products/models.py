@@ -2,7 +2,9 @@ from django.db import models
 from django.core.files import File
 from io import BytesIO
 from PIL import Image
-
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 from kenakata.settings import BASE_URL
 
 
@@ -46,6 +48,7 @@ class Product(models.Model):
 
     def get_image(self):
         if self.image:
+            return cloudinary.utils.cloudinary_url(self.image)
             return BASE_URL + self.image.url
         else:
             return ""
@@ -56,8 +59,8 @@ class Product(models.Model):
         else:
             if self.image:
                 self.thumbnail = self.make_thumbnail(self.image)
-                self.save()
-                return BASE_URL + self.thumbnail.url
+                cloudinary.uploader.upload(self.thumbnail)
+                return cloudinary.utils.cloudinary_url(self.thumbnail)
             else:
                 return ""
 

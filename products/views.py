@@ -7,10 +7,19 @@ from .models import Product, Category
 from .serializers import ProductSerializer, CategorySerializer
 
 # Create your views here.
-class ProductList(APIView):
+
+
+class AllProducts(APIView):
     def get(self, request, format=None):
         products = Product.objects.all()
         serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
+
+
+class AllCategories(APIView):
+    def get(self, request, format=None):
+        categories = Category.objects.all()
+        serializer = CategorySerializer(categories, many=True)
         return Response(serializer.data)
 
 

@@ -20,7 +20,7 @@ class Category(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return f"/{self.slug}/"
+        return f"/collections/{self.slug}/"
 
 
 class Product(models.Model):
@@ -32,7 +32,6 @@ class Product(models.Model):
     description = models.TextField(null=True, blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     image = models.ImageField(upload_to="uploads/", blank=True, null=True)
-    thumbnail = models.ImageField(upload_to="uploads/", blank=True, null=True)
     date_added = models.DateField(auto_now_add=True)
 
     class Meta:
@@ -42,30 +41,11 @@ class Product(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return f"/{self.category.slug}/{self.slug}/"
+        return f"/collections/{self.category.slug}/{self.slug}/"
+
 
     def get_image(self):
         if self.image:
             return BASE_URL + self.image.url
         else:
             return ""
-
-    def get_thumbnail(self):
-        if self.thumbnail:
-            return BASE_URL + self.thumbnail.url
-        else:
-            if self.image:
-                self.thumbnail = self.make_thumbnail(self.image)
-                self.save()
-                return BASE_URL + self.thumbnail.url
-            else:
-                return ""
-
-    def make_thumbnail(self, image, size=(300, 200)):
-        img = Image.open(image)
-        img.convert("RGBA")
-        img.thumbnail(size)
-        thumb_IO = BytesIO()
-        img.save(thumb_IO, "JPEG", quality=85)
-        thumbnail = File(thumb_IO, name=image.name)
-        return thumbnail

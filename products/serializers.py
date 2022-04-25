@@ -13,6 +13,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "price",
             "get_image",
             "get_absolute_url",
+            "is_featured"
         )
 
 

@@ -33,6 +33,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     image = models.ImageField(upload_to="uploads/", blank=True, null=True)
     date_added = models.DateField(auto_now_add=True)
+    is_featured = models.BooleanField(default=False, blank=True, null=True)
 
     class Meta:
         ordering = ("-date_added",)  # Order in decending
